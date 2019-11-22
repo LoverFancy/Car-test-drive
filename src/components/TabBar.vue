@@ -12,14 +12,6 @@ import { Vue, Component } from 'vue-property-decorator';
 import { Tabbar, TabbarItem } from 'vant';
 Vue.use(Tabbar).use(TabbarItem);
 
-import { Route } from 'vue-router';
-import store from '../store/index';
-declare module 'vue/types/vue' {
-  interface Vue {
-    $route: Route;
-  }
-}
-
 @Component({ name: 'TabBar' })
 export default class TabBar extends Vue {
   get active() {

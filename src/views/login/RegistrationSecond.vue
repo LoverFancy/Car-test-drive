@@ -35,6 +35,7 @@ interface formInterface {
 }
 import { Vue, Component } from 'vue-property-decorator';
 import { Row, Col, NavBar, Uploader, Button } from 'vant';
+import { State, Mutation, Action } from 'vuex-class';
 import util from '@/lib/util';
 Vue.use(Row)
   .use(Col)
@@ -58,17 +59,11 @@ export default class RegistrationSecond extends Vue {
     //   this.$toast.fail('请上传一张本人手持身份证的照片');
     // }
   }
-  public goback() {
+  public goback(): void {
     this.$router.push({ name: 'registrationfirst' });
     this.$store.commit('changeRegistrationSecond', this.form);
   }
   public uploaded(file, detail) {
-    this.$toast.loading({
-      message: '图片上传中...',
-      duration: 0,
-      forbidClick: true,
-      mask: true,
-    });
     util.miniBase64(file.content, (res) => {
       // 上传到服务器，然后返回图片的地址
       const data = {

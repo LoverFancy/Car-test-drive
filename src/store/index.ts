@@ -50,7 +50,7 @@ export default new Vuex.Store({
       state.loginSuccess.loginState = true;
     },
     // 消息未读数量
-    readMesg(state, readMesg) {
+    readMesgMutation(state, readMesg) {
       state.readMesg = readMesg;
     },
     // 修改标题

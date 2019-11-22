@@ -174,9 +174,9 @@ declare module 'vue/types/vue' {
 @Component({ name: 'RegistrationFirst' })
 export default class RegistrationFirst extends Vue {
   public store: any = this.$store;
-  public domain: '';
-  public idFrontPicPath: ''; // 身份证正面
-  public idBackPicPath: ''; // 身份证反面
+  public domain: string = '';
+  public idFrontPicPath: string = ''; // 身份证正面
+  public idBackPicPath: string = ''; // 身份证反面
   public form: formInterface = {
     domain: '',
     idFrontPicPath: '', // 身份证正面
@@ -438,7 +438,7 @@ export default class RegistrationFirst extends Vue {
     // } else {
     // }
   }
-  public mounted() {
+  private mounted(): void {
     this.form = this.$store.state.registration;
     this.idBackPicPath = this.$store.state.registration.idBackPicPath;
     this.form.idBackPicPath = this.$store.state.registration.idBackPicPath;
@@ -516,5 +516,4 @@ div.van-checkbox {
   height: 36px;
   line-height: 35px;
 }
-
 </style>

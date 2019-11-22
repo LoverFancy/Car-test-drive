@@ -1,4 +1,5 @@
 $container-width: 100%; //容器宽度
+
 // 文字超出限定宽度隐藏
 .text-ellipsis {
     overflow: hidden;
@@ -17,4 +18,53 @@ $container-width: 100%; //容器宽度
     flex-direction: $direction;
     justify-content: $justify;
     align-items: $align;
+}
+
+/* 共用样式 */
+.common-panel {
+    margin-bottom: 8px;
+    margin-top: 7px;
+
+    color: #303133;
+}
+
+.common-item {
+    padding: 5px 0;
+
+    font-size: 12px;
+    line-height: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.common-item span {
+    font-size: 12px;
+
+    color: #909399;
+}
+
+.common-item-status {
+    font-size: 14px;
+    font-weight: 600;
+    display: inline;
+}
+
+.common-smalltext {
+    display: flex;
+    align-items: center;
+
+    line-height: 30px;
+    font-size: 12px;
+    white-space: nowrap;
+
+    color: #606266;
+}
+
+.common-button {
+    margin: 10px 0;
+}
+
+.van-cell {
+    padding: 0;
 }

@@ -38,33 +38,37 @@ const routes = [
       navShow: true,
     },
   },
-  // {
-  //   name: 'productdetails',
-  //   component: () => import('./view/components/details/ProductDetails.vue'),
-  //   meta: { requireAuth: true, title: '金融产品' }
-  // },
-  // {
-  //   name: 'applyfirst',
-  //   component: () => import('./view/components/Loan/ApplyFirst.vue'),
-  //   meta: {
-  //     title: '申请贷款',
-  //     topNav: true
-  //   }
-  // },
-  // {
-  //   name: 'myloan',
-  //   component: () => import('./view/components/Loan/MyLoan.vue'),
-  //   meta: {
-  //     title: '我的贷款',
-  //   }
-  // },
-  // {
-  //   name: 'mycontract',
-  //   component: () => import('./view/components/contract/MyContract.vue'),
-  //   meta: {
-  //     title: '我的合同'
-  //   }
-  // },
+  {
+    path: '/productdetails',
+    name: 'productdetails',
+    component: () => import('../views/product/ProductDetails.vue'),
+    meta: { requireAuth: true, title: '金融产品' },
+  },
+  {
+    path: '/drivefirst',
+    name: 'drivefirst',
+    component: () => import('../views/test-drive/DriveFirst.vue'),
+    meta: {
+      title: '申请试驾',
+      topNav: true,
+    }
+  },
+  {
+    path: '/mydrive',
+    name: 'mydrive',
+    component: () => import('../views/test-drive/MyDrive.vue'),
+    meta: {
+      title: '我的试驾',
+    },
+  },
+  {
+    path: '/mycontract',
+    name: 'mycontract',
+    component: () => import('../views/contract/MyContract.vue'),
+    meta: {
+      title: '我的合同',
+    },
+  },
   // {
   //   name: 'billinginquiry',
   //   component: () => import('./view/components/bill/BillingInquiry.vue'),
@@ -100,35 +104,38 @@ const routes = [
   //     title: '咨询服务费',
   //   }
   // },
-  // {
-  //   name: 'announcementlist',
-  //   component: () => import('./view/components/details/AnnouncementList.vue'),
-  //   meta: {
-  //     title: '公告列表',
-  //     requireAuth: true,
-  //   }
-  // },
-  // {
-  //   path: '/announcementdetails/:noticeId',
-  //   name: 'announcementdetails',
-  //   component: () => import('./view/components/details/AnnouncementDetails.vue'),
-  //   meta: {
-  //     requireAuth: true,
-  //     title: '公告详情'
-  //   },
-  //   props: true,
-  // },
-  // {
-  //   name: 'applysecond',
-  //   component: () => import('./view/components/Loan/ApplySecond.vue'),
-  //   meta: { title: '申请贷款', topNav: true },
-  //   props: true,
-  // },
-  // {
-  //   name: 'applythird',
-  //   component: () => import('./view/components/Loan/ApplyThird.vue'),
-  //   meta: { title: '贷款申请表', topNav: true },
-  // },
+  {
+    path: '/announcementlist',
+    name: 'announcementlist',
+    component: () => import('../views/announcement/AnnouncementList.vue'),
+    meta: {
+      title: '公告列表',
+      requireAuth: true,
+    },
+  },
+  {
+    path: '/announcementdetails/:noticeId',
+    name: 'announcementdetails',
+    component: () => import('../views/announcement/AnnouncementDetails.vue'),
+    meta: {
+      requireAuth: true,
+      title: '公告详情',
+    },
+    props: true,
+  },
+  {
+    path: '/drivesecond',
+    name: 'drivesecond',
+    component: () => import('../views/test-drive/DriveSecond.vue'),
+    meta: { title: '申请试驾', topNav: true },
+    props: true,
+  },
+  {
+    path: '/drivethird',
+    name: 'drivethird',
+    component: () => import('../views/test-drive/DriveThird.vue'),
+    meta: { title: '试驾申请表', topNav: true },
+  },
   {
     path: '/start',
     name: 'start',
@@ -141,11 +148,12 @@ const routes = [
     component: () => import('../views/login/Login.vue'),
     meta: { topNav: true, requireAuth: true },
   },
-  // {
-  //   name: 'retrieve',
-  //   component: () => import('./view/components/login/Retrieve.vue'),
-  //   meta: { title: '找回密码', requireAuth: true }
-  // },
+  {
+    path: '/retrieve',
+    name: 'retrieve',
+    component: () => import('../views/login/Retrieve.vue'),
+    meta: { title: '找回密码', requireAuth: true },
+  },
   {
     path: '/registrationfirst',
     name: 'registrationfirst',
@@ -158,11 +166,18 @@ const routes = [
     component: () => import('../views/login/RegistrationSecond.vue'),
     meta: { title: '注册', topNav: true, requireAuth: true },
   },
-  // {
-  //   name: 'registrationthird',
-  //   component: () => import('./view/components/login/RegistrationThird.vue'),
-  //   meta: { title: '注册', topNav: true, requireAuth: true, }
-  // },
+  {
+    path: '/registrationthird',
+    name: 'registrationthird',
+    component: () => import('../views/login/RegistrationThird.vue'),
+    meta: { title: '注册', topNav: true, requireAuth: true, },
+  },
+  {
+    path: '/car',
+    name: 'car',
+    component: () => import('../views/Car.vue'),
+    meta: { title: '车辆', navShow: true },
+  },
   // {
   //   path: '/loandetails/:loanId',
   //   name: 'loandetails',
@@ -176,13 +191,15 @@ const routes = [
   //     title: '付款码'
   //   }
   // },
-  // {
-  //   name: 'signcontract',
-  //   component: () => import('./view/components/contract/SignContract.vue'),
-  //   meta: {
-  //     title: '签署合同'
-  //   }
-  // },
+  {
+    path: '/signcontract',
+    name: 'signcontract',
+    component: () => import('../views/contract/SignContract.vue'),
+    meta: {
+      title: '签署合同',
+      requireAuth: true,
+    },
+  },
   // {
   //   name: 'settings',
   //   component: () => import('./view/components/tabbar/Settings.vue'),
@@ -211,12 +228,12 @@ const routes = [
   //     title: '修改手机号'
   //   }
   // },
-  // {
-  //   path: '/contractdetails',
-  //   name: 'contractdetails',
-  //   component: () => import('./view/components/details/ContractDetails.vue'),
-  //   meta: { title: '合同详情' }
-  // },
+  {
+    path: '/contractdetails',
+    name: 'contractdetails',
+    component: () => import('../views/contract/ContractDetails.vue'),
+    meta: { title: '合同详情' },
+  },
   // {
   //   path: '/payresult',
   //   name: 'payresult',
@@ -234,10 +251,10 @@ const routes = [
   //   component: () => import('./view/components/login/Protocol.vue'),
   //   meta: { title: '注册协议', requireAuth: true, }
   // },
-  // {
-  //   path: '*',
-  //   redirect: '/home'
-  // },
+  {
+    path: '*',
+    redirect: '/',
+  },
 ];
 
 const router = new VueRouter({

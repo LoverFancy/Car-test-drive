@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import { Swipe, SwipeItem } from 'vant';
+import $request from '@/lib/request';
 Vue.use(Swipe).use(SwipeItem);
 
 import { Vue, Component } from 'vue-property-decorator';

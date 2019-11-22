@@ -52,14 +52,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { Row, Col, Icon, Button, NavBar } from 'vant';
+import $request from '@/lib/request';
+import { Row, Col, Icon, Button, NavBar, Toast } from 'vant';
 Vue.use(Row)
   .use(Col)
   .use(Button)
   .use(NavBar)
+  .use(Toast)
   .use(Icon);
 
-@Component({})
+@Component({ name: 'Mine' })
 export default class Mine extends Vue {
   public logoImg: string = require('../assets/logo.png');
   public information: object = {
@@ -70,8 +72,8 @@ export default class Mine extends Vue {
     {
       title: '我的试驾',
       icon: 'orders-o',
-      to: { name: 'myloan' },
-      name: 'myloan',
+      to: { name: 'mydrive' },
+      name: 'mydrive',
       color: '#1989fa',
     },
     {
@@ -85,7 +87,7 @@ export default class Mine extends Vue {
       title: '试驾指南',
       icon: 'search',
       to: { name: 'mycontract' },
-      name: 'billinginquiry',
+      name: 'mycontract',
       color: '#07c160',
     },
   ];
@@ -94,6 +96,38 @@ export default class Mine extends Vue {
   public quit() {
     const obj = {};
     this.$store.commit('quitLogin', obj);
+    this.$store.commit('deleteApplyLoan'); // 删除贷款数据
+    Toast.success('退出登录成功');
+    this.$router.replace({ name: 'home' });
+  }
+  // 根据不同的值跳转不同的页面
+  public iconClick(event: any) {
+    this.$router.push({ name: `${event.target.dataset.to}` });
+  }
+  // 跳转设置页面
+  public setting() {
+    this.$router.push({ name: 'settings' });
+  }
+  public getUserLegality() {
+    this.information = this.$store.state.loginSuccess;
+    const data = {
+      memberId: this.$store.state.loginSuccess.memberId,
+    };
+    $request({
+      url: `api/user/userLegality`,
+      method: 'post',
+      data,
+      headers: { 'Content-Type': 'application/json' },
+    }).then((result) => {
+      if (result.data.map.legality === 2 || result.data.map.legality === 1) {
+        Toast.fail(result.data.msg);
+        this.$router.replace({ name: 'home' });
+        this.$store.commit('quitLogin');
+      }
+    });
+  }
+  private mounted() {
+    this.getUserLegality();
   }
 }
 </script>
@@ -118,9 +152,7 @@ export default class Mine extends Vue {
   background-repeat: no-repeat;
 }
 .userimg {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex($justify: center, $align: center);
   overflow: hidden;
 
   border-radius: 50%;

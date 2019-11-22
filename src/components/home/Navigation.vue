@@ -26,17 +26,17 @@ export default class Navigation extends Vue {
     {
       title: '我要试驾',
       icon: require(`@/assets/iconApply.png`),
-      to: {},
+      to: { name: 'drivefirst' },
     },
     {
       title: '我的试驾',
       icon: require('@/assets/Myloan.png'),
-      to: {},
+      to: { name: 'mydrive' },
     },
     {
       title: '我的合同',
       icon: require('@/assets/iconContract.png'),
-      to: {},
+      to: { name: 'mycontract' },
     },
     {
       title: '试驾指南',

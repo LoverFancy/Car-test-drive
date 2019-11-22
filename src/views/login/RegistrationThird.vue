@@ -81,6 +81,7 @@ interface formInterface {
   mobile: string;
   password: string;
 }
+import $validate from '@/lib/validate';
 import { Vue, Component } from 'vue-property-decorator';
 import {
   Cell,
@@ -124,13 +125,13 @@ export default class RegistrationThird extends Vue {
 
   public submit() {
     this.submitLoading = true;
-    this.$validate.Tel(this.ruleForm.mobile, (res) => {
+    $validate.Tel(this.ruleForm.mobile, (res) => {
       this.telError = res;
     });
-    this.$validate.Pass(this.ruleForm.password, (res) => {
+    $validate.Pass(this.ruleForm.password, (res) => {
       this.passError = res;
     });
-    this.$validate.Verification(this.verification, (res) => {
+    $validate.Verification(this.verification, (res) => {
       this.verificationError = res;
     });
     if (this.verification != this.reVerification) {
@@ -211,5 +212,90 @@ export default class RegistrationThird extends Vue {
       //     });
     }
   }
+  // 短信
+  public sendMess() {
+    // 判断手机好是否正确
+    $validate.Tel(this.ruleForm.mobile, (res) => {
+      this.telError = res;
+    });
+    if (this.telError === '') {
+      this.sendMessDisble = true;
+      const data = {
+        telNum: this.ruleForm.mobile,
+        type: 1,
+      };
+      const json = JSON.stringify(data);
+      //   this.$axios({
+      //     url: `${this.$config.baseUrl}api/system/sendSMS`,
+      //     method: 'post',
+      //     data: json,
+      //     headers: { 'Content-Type': 'application/json' },
+      //   })
+      //     .then((result) => {
+      //       this.reVerification = result.data.map.yzm; // 将请求会来的短信验证码赋值
+      //       if (result.data.success === true) {
+      //         this.text = '已发送';
+      //         this.readonly = true;
+      //         let time = 60;
+      //         const Countdown = setInterval(() => {
+      //           this.text = `${(time -= 1)}s`;
+      //           if (time === 0) {
+      //             clearInterval(Countdown);
+      //             this.sendMessDisble = false;
+      //             this.text = '获取验证码';
+      //           }
+      //         }, 1000);
+      //       } else {
+      //         this.sendMessDisble = false;
+      //         this.$toast.fail('发送失败，请重试');
+      //       }
+      //     })
+      //     .catch((err) => {
+      //       this.sendMessDisble = false;
+      //       this.$toast.fail(err);
+      //     });
+    }
+  }
+  public goback() {
+    this.$router.back();
+  }
+  public mounted() {
+    this.ruleForm = this.$store.state.registration;
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.registration-third {
+  width: 90%;
+  min-height: 90vh;
+  margin: 0 auto;
+}
+.checked {
+  font-size: 14px;
+  margin-top: 10px;
+}
+.submitBtn {
+  margin-top: 20px;
+}
+.van-button {
+  height: 36px;
+  line-height: 35px;
+}
+/* 表单样式 */
+.van-cell {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  width: 100%;
+  height: 50px;
+
+  text-align: center;
+  color: #323233;
+}
+.van-popup {
+  width: 60%;
+  padding: 20px;
+}
+</style>
