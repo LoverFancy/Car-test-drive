@@ -13,6 +13,8 @@ export default new Vuex.Store({
     loginSuccess: {
       loginState: false, // 登录状态
       memberId: '1', // 会员id
+      memberName: '姓名', //
+      address: '天津市河东区', //
     },
     // 注册
     registration: {

@@ -29,13 +29,14 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { PullRefresh, Row, Col, Toast, Panel } from 'vant';
+import { PullRefresh, Row, Col, Toast, Panel, NavBar } from 'vant';
 import { State, Mutation } from 'vuex-class';
 import $request from '@/lib/request';
 Vue.use(PullRefresh)
   .use(Row)
   .use(Toast)
   .use(Panel)
+  .use(NavBar)
   .use(Col);
 
 @Component({
@@ -53,22 +54,9 @@ Vue.use(PullRefresh)
 })
 export default class Message extends Vue {
   @State public loginSuccess: any;
-  @Mutation public readMesg: any;
+  @Mutation public readMesgMutation: any;
   public isLoading: boolean = false;
-  public lists: any = [
-    {
-      msgId: 1,
-      contractNo: 'QZZ1911002第（002）号',
-      msgType: 1,
-      nickName: 'Juzi',
-      memberId: 1,
-      title: '还款通知',
-      memberName: '范常',
-      msgTime: 1573528362000,
-      msgContent:
-        '您融资租赁贷款最新还款信息，还款金额：人民币8334.0元，还款日期：2019-11-12 11:12:42，融资租赁贷款1/6期账单已还清。',
-    },
-  ];
+  public lists: any = [];
   // 生命周期，挂载
   public mounted() {
     this.getMsgDetailList();
@@ -80,7 +68,9 @@ export default class Message extends Vue {
       this.isLoading = false;
     }, 1000);
   }
-  // 获取信息
+  /**
+   * 调用接口获取信息
+   */
   public getMsgDetailList() {
     Toast.loading({
       message: '加载中...',
@@ -90,20 +80,22 @@ export default class Message extends Vue {
       memberId: this.loginSuccess.memberId,
     });
     $request({
-      url: 'api/',
+      url: 'api/message',
       method: 'post',
       data,
-    }).then((result) => {
-      Toast.clear();
-      this.readMesg(0);
-      this.lists = result.data.map.readMesg;
-      this.lists.forEach((item: any) => {
-        item.msgContent = item.msgContent.split('，');
+    })
+      .then((result) => {
+        Toast.clear();
+        this.readMesgMutation(0);
+        this.lists = result.data.readMesg;
+        this.lists.forEach((item: any) => {
+          item.msgContent = item.msgContent.split('，');
+        });
+      })
+      .catch((err) => {
+        Toast.clear();
+        console.log(err);
       });
-    });
-    // this.lists.forEach((item: any) => {
-    //   item.msgContent = item.msgContent.split('，');
-    // });
   }
 }
 </script>

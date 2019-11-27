@@ -155,6 +155,7 @@ export default class MyContract extends Vue {
       data: json,
     })
       .then((result) => {
+        console.log(result)
         this.lists = result.data.map.contract;
       })
       .catch((err) => {

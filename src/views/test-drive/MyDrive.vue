@@ -213,7 +213,7 @@ export default class MyDrive extends Vue {
       headers: { 'Content-Type': 'application/json' },
     })
       .then((result) => {
-        this.lists = result.data.map.loan;
+        this.lists = result.data.loan;
         Toast.clear();
       })
       .catch((err) => {
@@ -236,8 +236,6 @@ export default class MyDrive extends Vue {
         Toast.fail(result.data.msg);
         this.$router.replace({ name: 'home' });
         this.quitLogin();
-      } else {
-        this.getMemberLoanInfo();
       }
     });
   }

@@ -101,10 +101,8 @@ export default class Mine extends Vue {
   //  methods
   public quit() {
     const obj = {};
-    // this.$store.commit('quitLogin', obj);
     this.mutationQuitLogin(obj);
-    // this.$store.commit('deleteApplyLoan'); // 删除贷款数据
-    this.mutationDeleteApplyLoan();
+    this.mutationDeleteApplyLoan(); // 删除贷款数据
     Toast.success('退出登录成功');
     this.$router.replace({ name: 'home' });
   }
