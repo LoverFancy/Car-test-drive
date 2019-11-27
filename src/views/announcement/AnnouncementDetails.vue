@@ -13,14 +13,16 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-import { Row, Col, CellGroup, Cell } from 'vant';
+import { Row, Col, CellGroup, Cell, Toast } from 'vant';
 Vue.use(Row)
   .use(Col)
   .use(CellGroup)
+  .use(Toast)
   .use(Cell);
 import $request from '@/lib/request';
 @Component({ name: 'AnnouncementDetails' })
 export default class AnnouncementDetails extends Vue {
+  public $route: any;
   public title: string = '';
   public body: string = '';
   public time: string = '';
@@ -28,21 +30,21 @@ export default class AnnouncementDetails extends Vue {
     type: String,
     required: true,
   })
-  private noticeId: string;
+  private noticeId: number = 0;
 
   // 加载页面数据
   public getInvoiceInfo() {
-    this.$toast.loading({
+    Toast.loading({
       message: '加载中...',
       duration: 0,
       forbidClick: true,
     });
     const data = {
-      noticeId: this.noticeId,
+      noticeId: parseInt(this.$route.params.noticeId, 10),
     };
     const json = JSON.stringify(data);
     $request({
-      url: `api/system/getInvoiceInfo`,
+      url: `api/noticelists`,
       method: 'post',
       data: json,
       headers: { 'Content-Type': 'application/json' },
@@ -53,10 +55,10 @@ export default class AnnouncementDetails extends Vue {
         const date = new Date(res.data.map.notice.issueTime);
         this.time = `${date.getFullYear()}-${date.getMonth() +
           1}-${date.getDate()}`;
-        this.$toast.clear();
+        Toast.clear();
       })
       .catch((err) => {
-        this.$toast.fail(err);
+        Toast.fail(err);
       });
   }
 

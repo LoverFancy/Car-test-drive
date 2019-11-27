@@ -113,6 +113,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { Row, Col, Button, Icon, Panel, Toast } from 'vant';
+import { State, Mutation } from 'vuex-class';
 import $request from '@/lib/request';
 Vue.use(Row)
   .use(Col)
@@ -124,7 +125,7 @@ Vue.use(Row)
 @Component({
   name: 'MyDrive',
   filters: {
-    capitalize(value) {
+    capitalize(value: number) {
       if (value === 0) {
         return '待审核';
       } else if (value === 1) {
@@ -133,7 +134,7 @@ Vue.use(Row)
         return '审核未通过';
       }
     },
-    status(value) {
+    status(value: number) {
       if (value === 0) {
         return 'red';
       } else if (value === 1) {
@@ -145,12 +146,20 @@ Vue.use(Row)
   },
 })
 export default class MyDrive extends Vue {
+  public $router: any;
+  @State public loginSuccess: any;
+  @Mutation public loanEdit: any;
+  @Mutation public editLoan1: any;
+  @Mutation public editLoan2: any;
+  @Mutation public editLoan3: any;
+  @Mutation public setEvidence: any;
+  @Mutation public quitLogin: any;
   public lists = [];
   public loanId: string = '';
-  public edit(event) {
+  public edit(event: any) {
     // 获取贷款申请表的数据
     if (event.target.dataset.loanid != '') {
-      this.$toast.loading({
+      Toast.loading({
         message: '加载中...',
         mask: true,
         duration: 0,
@@ -168,16 +177,16 @@ export default class MyDrive extends Vue {
         data: json,
       })
         .then((result) => {
-          this.$store.commit('loanEdit');
-          this.$store.commit('editLoan1', result.data.map.loan);
-          this.$store.commit('editLoan2', result.data.map.customer);
-          this.$store.commit('editLoan3', result.data.map.customerApply);
-          this.$store.commit('setEvidence', result.data.map.evidence);
+          this.loanEdit();
+          this.editLoan1(result.data.map.loan);
+          this.editLoan2(result.data.map.customer);
+          this.editLoan3(result.data.map.customerApply);
+          this.setEvidence(result.data.map.evidence);
           this.$router.push({ name: 'applyfirst' });
-          this.$toast.clear();
+          Toast.clear();
         })
         .catch((err) => {
-          this.$toast.fail(err);
+          Toast.fail(err);
         });
     }
   }
@@ -187,32 +196,35 @@ export default class MyDrive extends Vue {
   }
   // 获取会员id和数据
   public getMemberLoanInfo() {
-    this.$toast.loading({
+    Toast.loading({
       mask: true,
       message: '加载中...',
       forbidClick: true,
-      duration: 10000,
+      duration: 0,
     });
     const data = {
-      memberId: this.$store.state.loginSuccess.memberId,
+      memberId: parseInt(this.loginSuccess.memberId, 10),
     };
+
     $request({
-      url: `api/loan/getMemberLoanInfo`,
+      url: `api/mydrive`,
       method: 'post',
       data,
       headers: { 'Content-Type': 'application/json' },
     })
       .then((result) => {
         this.lists = result.data.map.loan;
-        this.$toast.clear();
+        Toast.clear();
       })
       .catch((err) => {
-        this.$toast.fail('系统异常');
+        console.log('axios error: ' + err);
+        Toast.clear();
       });
   }
+  // 身份验证
   public getUserLegality() {
     const data = {
-      memberId: this.$store.state.loginSuccess.memberId,
+      memberId: this.loginSuccess.memberId,
     };
     $request({
       url: `api/user/userLegality`,
@@ -221,16 +233,17 @@ export default class MyDrive extends Vue {
       headers: { 'Content-Type': 'application/json' },
     }).then((result) => {
       if (result.data.map.legality === 2 || result.data.map.legality === 1) {
-        this.$toast.fail(result.data.msg);
+        Toast.fail(result.data.msg);
         this.$router.replace({ name: 'home' });
-        this.$store.commit('quitLogin');
+        this.quitLogin();
       } else {
         this.getMemberLoanInfo();
       }
     });
   }
   private mounted() {
-    this.getUserLegality();
+    // this.getUserLegality();
+    this.getMemberLoanInfo();
   }
 }
 </script>

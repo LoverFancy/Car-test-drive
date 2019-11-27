@@ -30,6 +30,8 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import { PullRefresh, Row, Col, Toast, Panel } from 'vant';
+import { State, Mutation } from 'vuex-class';
+import $request from '@/lib/request';
 Vue.use(PullRefresh)
   .use(Row)
   .use(Toast)
@@ -50,32 +52,10 @@ Vue.use(PullRefresh)
   },
 })
 export default class Message extends Vue {
+  @State public loginSuccess: any;
+  @Mutation public readMesg: any;
   public isLoading: boolean = false;
   public lists: any = [
-    {
-      msgId: 1,
-      contractNo: 'QZZ1911002第（002）号',
-      msgType: 1,
-      nickName: 'Juzi',
-      memberId: 1,
-      title: '还款通知',
-      memberName: '范常',
-      msgTime: 1573528362000,
-      msgContent:
-        '您融资租赁贷款最新还款信息，还款金额：人民币8334.0元，还款日期：2019-11-12 11:12:42，融资租赁贷款1/6期账单已还清。',
-    },
-    {
-      msgId: 1,
-      contractNo: 'QZZ1911002第（002）号',
-      msgType: 1,
-      nickName: 'Juzi',
-      memberId: 1,
-      title: '还款通知',
-      memberName: '范常',
-      msgTime: 1573528362000,
-      msgContent:
-        '您融资租赁贷款最新还款信息，还款金额：人民币8334.0元，还款日期：2019-11-12 11:12:42，融资租赁贷款1/6期账单已还清。',
-    },
     {
       msgId: 1,
       contractNo: 'QZZ1911002第（002）号',
@@ -96,14 +76,34 @@ export default class Message extends Vue {
   // 下拉刷新
   public onRefresh() {
     setTimeout(() => {
-      this.$toast('刷新成功');
+      Toast('刷新成功');
       this.isLoading = false;
     }, 1000);
   }
+  // 获取信息
   public getMsgDetailList() {
-    this.lists.forEach((item, index, array) => {
-      item.msgContent = item.msgContent.split('，');
+    Toast.loading({
+      message: '加载中...',
+      duration: 0,
     });
+    const data = JSON.stringify({
+      memberId: this.loginSuccess.memberId,
+    });
+    $request({
+      url: 'api/',
+      method: 'post',
+      data,
+    }).then((result) => {
+      Toast.clear();
+      this.readMesg(0);
+      this.lists = result.data.map.readMesg;
+      this.lists.forEach((item: any) => {
+        item.msgContent = item.msgContent.split('，');
+      });
+    });
+    // this.lists.forEach((item: any) => {
+    //   item.msgContent = item.msgContent.split('，');
+    // });
   }
 }
 </script>

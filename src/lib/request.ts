@@ -2,9 +2,11 @@ import * as axios from 'axios';
 import { Toast } from 'vant';
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
 
-/* baseURL 按实际项目来定义 */
+/* baseURL ajax请求地址 */
 // const baseURL = process.env.VUE_APP_URL;
-const baseURL = 'https://jsonplaceholder.typicode.com/';
+// const baseURL = 'https://jsonplaceholder.typicode.com/';
+const baseURL = 'http://localhost:7001/';
+
 
 /* 创建axios实例 */
 const service = axios.default.create({
@@ -31,5 +33,8 @@ service.interceptors.response.use(
     (error: any) => {
         return Promise.reject(error);
     });
+
+// 图片地址
+export const picUrl = 'http://rz.jetonda.com';
 
 export default service;

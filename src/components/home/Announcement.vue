@@ -35,39 +35,49 @@
 <script lang="ts">
 import { Swipe, SwipeItem } from 'vant';
 import { Vue, Component } from 'vue-property-decorator';
+import $request from '@/lib/request';
 Vue.use(Swipe).use(SwipeItem);
 
 @Component({ name: 'Announcement' })
 export default class Announcement extends Vue {
-  public lists = [];
+  public lists: any = [];
   public mounted() {
     this.getInvoiceInfo();
   }
   public getInvoiceInfo() {
-    const noticeList: object[] = [
-      {
-        noticeId: 1,
-        noticeTitle: '备战双十二，超级大优惠！！！',
-        noticeContent: '新客户首次贷款即送25kg金龙鱼大米一袋，请咨询销售顾问。',
-        issuer: '系统管理员',
-        issueTime: 1573541741000,
-      },
-    ];
-    for (let i = 1; i <= noticeList.length; i++) {
-      // 如果公告不足2条
-      if (noticeList.length <= 2) {
-        this.lists.push(noticeList);
-      } else {
-        if (i % 2 === 0) {
-          const list1 = [];
-          list1.push(noticeList[i - 2], noticeList[i - 1]);
-          this.lists.push(list1);
+    const data = {
+      noticeId: 0,
+    };
+    const json = JSON.stringify(data);
+    $request({
+      // url: `api/system/getInvoiceInfo`,
+      url: '/api/noticelists',
+      method: 'post',
+      data: json,
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((result) => {
+        const list = result.data.map.noticeList;
+        this.lists = [];
+        for (let i = 1; i <= list.length; i++) {
+          // 如果公告不足2条
+          if (list.length <= 2) {
+            this.lists.push(list);
+          } else {
+            if (i % 2 === 0) {
+              const list1 = [];
+              list1.push(list[i - 2], list[i - 1]);
+              this.lists.push(list1);
+            }
+          }
         }
-      }
-    }
-    if (noticeList.length >= 3 && noticeList.length % 2 === 1) {
-      this.lists.push([noticeList[noticeList.length - 1]]);
-    }
+        if (list.length >= 3 && list.length % 2 === 1) {
+          this.lists.push([list[list.length - 1]]);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 </script>

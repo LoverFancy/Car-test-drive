@@ -9,7 +9,7 @@ declare module 'vue/types/vue' {
   import { Route } from 'vue-router'
   interface Vue {
     $router: VueRouter,
-    $route: Route
+    $route: Route,
   }
 }
 declare module '*.png'

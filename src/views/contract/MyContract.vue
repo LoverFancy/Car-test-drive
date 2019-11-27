@@ -107,6 +107,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import $request from '@/lib/request';
 import { Row, Col, Panel, Button, Icon, Toast, ImagePreview } from 'vant';
+import { State, Mutation } from 'vuex-class';
 Vue.use(Row)
   .use(Col)
   .use(Panel)
@@ -117,7 +118,7 @@ Vue.use(Row)
 @Component({
   name: 'MyContract',
   filters: {
-    capitalize(value) {
+    capitalize(value: number) {
       if (value === 0) {
         return '未签订';
       } else if (value === 1) {
@@ -126,7 +127,7 @@ Vue.use(Row)
         return '';
       }
     },
-    status(value) {
+    status(value: number) {
       if (value === 0) {
         return 'red';
       } else if (value === 1) {
@@ -138,14 +139,17 @@ Vue.use(Row)
   },
 })
 export default class MyContract extends Vue {
+  @State('loginSuccess') public stateLoginSuccess: any;
+  @Mutation('quitLogin') public mutationQuitLogin: any;
+  public $router: any;
   public lists = [];
   public getMemberContractInfo() {
     const data = {
-      memberId: this.$store.state.loginSuccess.memberId.toString(),
+      memberId: this.stateLoginSuccess.memberId.toString(),
     };
     const json = JSON.stringify(data);
     $request({
-      url: `api/contract/getMemberContractInfo`,
+      url: `api/mycontract`,
       method: 'post',
       headers: { 'Content-Type': 'application/json' },
       data: json,
@@ -154,12 +158,13 @@ export default class MyContract extends Vue {
         this.lists = result.data.map.contract;
       })
       .catch((err) => {
-        this.$toast.fail(err);
+        Toast.fail(err);
       });
   }
+  // 身份验证
   public getUserLegality() {
     const data = {
-      memberId: this.$store.state.loginSuccess.memberId,
+      memberId: this.stateLoginSuccess.memberId,
     };
     $request({
       url: `api/user/userLegality`,
@@ -168,16 +173,17 @@ export default class MyContract extends Vue {
       headers: { 'Content-Type': 'application/json' },
     }).then((result) => {
       if (result.data.map.legality === 2 || result.data.map.legality === 1) {
-        this.$toast.fail(result.data.msg);
+        Toast.fail(result.data.msg);
         this.$router.replace({ name: 'home' });
-        this.$store.commit('quitLogin');
+        this.mutationQuitLogin('quitLogin');
       } else {
         this.getMemberContractInfo();
       }
     });
   }
   private mounted() {
-    this.getUserLegality();
+    // this.getUserLegality();
+    this.getMemberContractInfo();
   }
 }
 </script>

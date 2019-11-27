@@ -53,6 +53,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import $request from '@/lib/request';
+import { State, Mutation } from 'vuex-class';
 import { Row, Col, Icon, Button, NavBar, Toast } from 'vant';
 Vue.use(Row)
   .use(Col)
@@ -63,8 +64,9 @@ Vue.use(Row)
 
 @Component({ name: 'Mine' })
 export default class Mine extends Vue {
+  public $router: any;
   public logoImg: string = require('../assets/logo.png');
-  public information: object = {
+  public information: any = {
     memberName: '姓名',
     address: '天津市河东区',
   };
@@ -92,11 +94,17 @@ export default class Mine extends Vue {
     },
   ];
 
+  @Mutation('quitLogin') public mutationQuitLogin: any;
+  @Mutation('deleteApplyLoan') public mutationDeleteApplyLoan: any;
+  @State('loginSuccess') public stateLoginSuccess: any;
+
   //  methods
   public quit() {
     const obj = {};
-    this.$store.commit('quitLogin', obj);
-    this.$store.commit('deleteApplyLoan'); // 删除贷款数据
+    // this.$store.commit('quitLogin', obj);
+    this.mutationQuitLogin(obj);
+    // this.$store.commit('deleteApplyLoan'); // 删除贷款数据
+    this.mutationDeleteApplyLoan();
     Toast.success('退出登录成功');
     this.$router.replace({ name: 'home' });
   }
@@ -109,9 +117,9 @@ export default class Mine extends Vue {
     this.$router.push({ name: 'settings' });
   }
   public getUserLegality() {
-    this.information = this.$store.state.loginSuccess;
+    this.information = this.stateLoginSuccess;
     const data = {
-      memberId: this.$store.state.loginSuccess.memberId,
+      memberId: this.information.memberId,
     };
     $request({
       url: `api/user/userLegality`,
@@ -122,7 +130,7 @@ export default class Mine extends Vue {
       if (result.data.map.legality === 2 || result.data.map.legality === 1) {
         Toast.fail(result.data.msg);
         this.$router.replace({ name: 'home' });
-        this.$store.commit('quitLogin');
+        this.mutationQuitLogin();
       }
     });
   }

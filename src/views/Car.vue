@@ -25,6 +25,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { State, Mutation } from 'vuex-class';
 import {
   Sidebar,
   SidebarItem,
@@ -93,7 +94,9 @@ export default class Car extends Vue {
       ],
     },
   ];
-  public sidebarClick(index: number) {}
+  public sidebarClick(index: number) {
+    
+  }
 }
 </script>
 

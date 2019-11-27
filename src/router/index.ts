@@ -51,7 +51,7 @@ const routes = [
     meta: {
       title: '申请试驾',
       topNav: true,
-    }
+    },
   },
   {
     path: '/mydrive',
@@ -170,7 +170,7 @@ const routes = [
     path: '/registrationthird',
     name: 'registrationthird',
     component: () => import('../views/login/RegistrationThird.vue'),
-    meta: { title: '注册', topNav: true, requireAuth: true, },
+    meta: { title: '注册', topNav: true, requireAuth: true },
   },
   {
     path: '/car',
@@ -245,12 +245,12 @@ const routes = [
   //   component: () => import('./view/components/wxPay/WxPay.vue'),
   //   meta: { title: '订单支付', topNav: true, }
   // },
-  // {
-  //   path: '/protocol',
-  //   name: 'protocol',
-  //   component: () => import('./view/components/login/Protocol.vue'),
-  //   meta: { title: '注册协议', requireAuth: true, }
-  // },
+  {
+    path: '/protocol',
+    name: 'protocol',
+    component: () => import('../views/login/Protocol.vue'),
+    meta: { title: '注册协议', requireAuth: true },
+  },
   {
     path: '*',
     redirect: '/',

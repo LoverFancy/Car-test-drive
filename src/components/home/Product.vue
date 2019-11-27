@@ -22,35 +22,22 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import $request, { picUrl } from '@/lib/request';
 
 @Component({ name: 'Product' })
 export default class Product extends Vue {
-  public proInfo: object[] = [
-    {
-      productId: 1,
-      productName: '组合贷款产品',
-      categoryId: 1,
-      categoryName: '金融产品',
-      productPrice: null,
-      logo: 'http://rz.htkrtech.com/static/img/2019/08/201908051606550614.png',
-    },
-    {
-      productId: 2,
-      productName: '组合贷款产品',
-      categoryId: 2,
-      categoryName: '金融产品',
-      productPrice: null,
-      logo: 'http://rz.htkrtech.com/static/img/2019/08/201908051606550614.png',
-    },
-    {
-      productId: 3,
-      productName: '组合贷款产品',
-      categoryId: 3,
-      categoryName: '金融产品',
-      productPrice: null,
-      logo: 'http://rz.htkrtech.com/static/img/2019/08/201908051606550614.png',
-    },
-  ];
+  public proInfo: any = [];
+  public getAllProInfo() {
+    $request.get('api/products').then((result) => {
+      this.proInfo = result.data.map.proInfo;
+      this.proInfo.forEach((items: any) => {
+        items.logo = picUrl + items.logo;
+      });
+    });
+  }
+  private mounted() {
+    this.getAllProInfo();
+  }
 }
 </script>
 

@@ -17,10 +17,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import $request from '@/lib/request';
-import { Row, Col, PullRefresh, Cell } from 'vant';
+import { Row, Col, PullRefresh, Cell, Toast } from 'vant';
 Vue.use(Row)
   .use(Col)
   .use(Cell)
+  .use(Toast)
   .use(PullRefresh);
 
 @Component({ name: 'AnnouncementList' })
@@ -35,7 +36,7 @@ export default class AnnouncementList extends Vue {
     };
     const json = JSON.stringify(data);
     $request({
-      url: `api/system/getInvoiceInfo`,
+      url: `api/noticelists`,
       method: 'post',
       data: json,
       headers: { 'Content-Type': 'application/json' },
@@ -45,35 +46,35 @@ export default class AnnouncementList extends Vue {
           this.lists = result.data.map.noticeList;
           // 加载状态结束
           this.isLoading = false;
-          this.$toast.success('加载成功');
+          Toast.success('加载成功');
         } else {
-          this.$toast.fail('加载失败');
+          Toast.fail('加载失败');
           this.isLoading = false;
         }
       })
       .catch((err) => {
-        this.$toast.fail(err);
+        Toast.fail(err);
       });
   }
   // 获取信息
   public getInvoiceInfo() {
-    this.$toast.loading('加载中...');
+    Toast.loading('加载中...');
     const data = {
       noticeId: 0,
     };
     const json = JSON.stringify(data);
     $request({
-      url: `api/system/getInvoiceInfo`,
+      url: `api/noticelists`,
       method: 'post',
       data: json,
       headers: { 'Content-Type': 'application/json' },
     })
       .then((result) => {
         this.lists = result.data.map.noticeList;
-        this.$toast.clear();
+        Toast.clear();
       })
       .catch((err) => {
-        this.$toast.fail(err);
+        Toast.fail(err);
       });
   }
   private mounted() {
@@ -91,6 +92,7 @@ export default class AnnouncementList extends Vue {
 }
 .van-pull-refresh {
   min-height: 100vh;
+  width: 100%;
 }
 li {
   font-size: 14px;

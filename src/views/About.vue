@@ -13,7 +13,7 @@ import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 import request from '@/lib/request';
 
-@Component({})
+@Component
 export default class About extends Vue {
   // computed
   get msg2() {
@@ -22,14 +22,15 @@ export default class About extends Vue {
   // data
   public msg: string = 'about';
   public child: string = 'child';
-  @State('readMesg') private readMesg: number;
-  @Mutation('readMesgMutation') private readMesgMutation;
+  @State('readMesg') public readMesg: any;
+  @Mutation('readMesgMutation') public readMesgMutation: any;
+
   // mounted
   public mounted() {
     request({
-      url: 'posts',
+      url: 'api/banners',
       data: JSON.stringify({ title: 'foo', body: 'bar', userId: 1 }),
-      method: 'post',
+      method: 'get',
     }).then((res) => {
       console.log(res);
     });

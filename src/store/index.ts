@@ -12,6 +12,7 @@ export default new Vuex.Store({
     // 登录成功
     loginSuccess: {
       loginState: false, // 登录状态
+      memberId: '1', // 会员id
     },
     // 注册
     registration: {

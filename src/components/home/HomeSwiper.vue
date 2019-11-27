@@ -10,16 +10,29 @@
 
 <script lang="ts">
 import { Swipe, SwipeItem } from 'vant';
-import $request from '@/lib/request';
+import $request, { picUrl } from '@/lib/request';
 Vue.use(Swipe).use(SwipeItem);
 
 import { Vue, Component } from 'vue-property-decorator';
 @Component({ name: 'HomeSwiper' })
 export default class HomeSwiper extends Vue {
-  public imgs: string[] = [
-    'http://rz.htkrtech.com/static/img/2019/09/201909101015450687.png',
-    'http://rz.htkrtech.com/static/img/2019/09/201909101015450687.png',
-  ];
+  public imgs: string[] = [];
+  public getSlideImgInfo() {
+    $request
+      .get('api/banners')
+      .then((result) => {
+        const reimgs = result.data.map.slideList;
+        this.imgs = reimgs.map((items: any) => {
+          return picUrl + items.slidePic;
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  private mounted() {
+    this.getSlideImgInfo();
+  }
 }
 </script>
 
