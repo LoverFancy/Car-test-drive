@@ -1192,11 +1192,11 @@ export default class DriveThird extends Vue {
             this.select.guarantorTel2 = this.$store.state.applyLoan2.guarantorTel2;
             console.log('企业办理 非编辑');
           }
-          this.$toast.clear();
+          Toast.clear();
         }
       })
       .catch((err) => {
-        this.$toast.fail('系统异常' + err);
+        Toast.fail('系统异常' + err);
       });
   }
   private mounted() {
